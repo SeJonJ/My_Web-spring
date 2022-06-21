@@ -215,3 +215,4 @@ $RECYCLE.BIN/
 #.vscode/
 /src/main/java/HJproject/Hellospring/Practice/
 /src/main/java/HJproject/Hellospring/connSQL/ConnSQL.java
+/src/main/java/HJproject/Hellospring/application.properties
