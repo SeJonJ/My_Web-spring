@@ -41,7 +41,7 @@ public class JpamemberRepository implements MemberRepository{
         // 일반적인 SQL 과 비슷한데 딱 하나 다른점이라고 하면 일반 SQL이 중간에 * 로 테이블을 선택하고 컬럼명을 넣는다면
         // 이때 쿼리에서의 MM은 일종의 별칭으로 어떻게 설정해줘도 상관은 없지만 꼭 필요하다.
         // 또한 파라미터를 사용법중 이름 기준 파라미터를 사용하는 경우 JPQL에서 앞에 : 를 붙여준다
-        List<Member> result = em.createQuery("select MM from MEMBER MM where MM.MNAME=:MNAME", Member.class)
+        List<Member> result = em.createQuery("select MM from Member MM where MM.MNAME=:MNAME", Member.class)
                 .setParameter("MNAME", MNAME)
                 .getResultList();
 
@@ -52,7 +52,7 @@ public class JpamemberRepository implements MemberRepository{
     /* 5. 내 맘대로 구현하기 */
     @Override
     public Optional<Member> findById(String MID) {
-        List<Member> result = em.createQuery("select m from MEMBER m where m.MID=:MID", Member.class)
+        List<Member> result = em.createQuery("select m from Member m where m.MID=:MID", Member.class)
                 .setParameter("MID", MID)
                 .getResultList();
 
@@ -61,7 +61,7 @@ public class JpamemberRepository implements MemberRepository{
 
     @Override
     public Optional<Member> findByPasswd(String MPASSWD) {
-        List<Member> result = em.createQuery("select m from MEMBER m where m.MPASSWD=:MPASSWD", Member.class)
+        List<Member> result = em.createQuery("select m from Member m where m.MPASSWD=:MPASSWD", Member.class)
                 .setParameter("MPASSWD", MPASSWD)
                 .getResultList();
 
@@ -75,7 +75,7 @@ public class JpamemberRepository implements MemberRepository{
 
     @Override
     public  Optional<Member> findBySex(String GENDER){
-        List<Member> result = em.createQuery("select m from MEMBER m where m.GENDER:GENDER", Member.class)
+        List<Member> result = em.createQuery("select m from Member m where m.MGENDER=:MGENDER", Member.class)
                 .setParameter("MGENDER", GENDER)
                 .getResultList();
 
@@ -100,7 +100,7 @@ public class JpamemberRepository implements MemberRepository{
 
     @Override
     public List<Member> findAll() {
-        List<Member> result = em.createQuery("select m from MEMBER m ", Member.class)
+        List<Member> result = em.createQuery("select m from Member m ", Member.class)
                 .getResultList();
         return result;
     }

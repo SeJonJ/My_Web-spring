@@ -40,6 +40,13 @@ dependencies {
 //	JSON
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+	// jsp
+	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+
+// https://mvnrepository.com/artifact/javax.servlet/jstl
+	implementation 'javax.servlet:jstl:1.2'
+
+
 
 //	testImplementation('org.springframwork.boot:spring-boot-starter-test'){
 //		exclude group : 'org.junit.vintage', module: 'junit-vintage-engine'

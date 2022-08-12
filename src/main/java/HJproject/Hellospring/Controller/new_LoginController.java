@@ -36,9 +36,12 @@ public class new_LoginController {
         return "members/login";
     }
 
-//    @PostMapping("/login") // http 서블릿 세션 활용 로그인
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String loginWithHttpSession(@ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse res) throws IOException {
+    @PostMapping("/login")
+    public String loginWithHttpSession(@ModelAttribute LoginForm form,
+                                       BindingResult bindingResult,
+                                       HttpServletRequest request, HttpServletResponse res,
+                                       @RequestParam(defaultValue = "/") String redirectURL
+    ) throws IOException {
         JSONObject jso = new JSONObject();
         // 에러 관리 메서드(아직 사용 X)
 //        if (bindingResult.hasErrors()) {
@@ -66,7 +69,7 @@ public class new_LoginController {
 
             return "members/login";
 
-        }else if(form.getLoginid() == null || form.getLoginpw() == null){
+        } else if (form.getLoginid() == null || form.getLoginpw() == null) {
             System.out.println("아이디나 비밀번호 중 null 값 존재");
 
             res.setContentType("text/html;charset=utf-8");
@@ -93,7 +96,9 @@ public class new_LoginController {
 
         /** 이렇게 세션에 별도의 다른 값을 넣어 둘 수 있음 **/
         session.setAttribute("memberCode", LoginMember.getMEMBERCODE());
-        return "redirect:/";
+
+        log.info("redirectURL = {}", redirectURL);
+        return "redirect:" + redirectURL;
 
 
     }
@@ -101,10 +106,10 @@ public class new_LoginController {
 
     @PostMapping("/logout") // http 서블릿 세션 활용 로그아웃
     // 세션 종료를 위해서는 sessionManager 에 만들어두었던 expireCookie 를 사용하자
-    public String loginWithHttpSession(HttpServletRequest request){
+    public String loginWithHttpSession(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
-        if(session != null){
+        if (session != null) {
             // invalidate 는 세션을 삭제하는 기능
             session.invalidate();
         }

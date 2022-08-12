@@ -116,7 +116,7 @@ public class MemberController {
         out.print(jso.toString());
     }
 
-    @GetMapping("/members/member_List") // members 페이지에 대해 Get 으로 넘어올 때 -> 주로 값을 불러오는 하는 경우
+    @RequestMapping("/members/member_List") // members 페이지에 대해 Get 으로 넘어올 때 -> 주로 값을 불러오는 하는 경우
     public String list(Model model){ // Model 사용을 list 로 사용
         List<Member> members = memberService.findMembers(); // memberService.findMembers() 를 list 형식으로 저장
         model.addAttribute("members", members);
