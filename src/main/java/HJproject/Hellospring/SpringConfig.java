@@ -2,13 +2,16 @@ package HJproject.Hellospring;
 
 import HJproject.Hellospring.Filter.LogFilter;
 import HJproject.Hellospring.Filter.LoginCheckFilter;
+import HJproject.Hellospring.argumentResolver.LoginMemberArgumentResolver;
 import HJproject.Hellospring.interceptor.LogInterceptor;
+import HJproject.Hellospring.interceptor.LoginCheckInterceptor;
 import HJproject.Hellospring.repository.*;
 import HJproject.Hellospring.service.memberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,15 +19,29 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.Filter;
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration // 스프링 빈에 등록하기 위한 설정파일이라는 Annotation
 public class SpringConfig implements WebMvcConfigurer {
+
+    // ArgumentResolver 를 등록하기 위한 override
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginMemberArgumentResolver());
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LogInterceptor())
-                .order(1)
-                .addPathPatterns("/**") // 패턴 적용 방식이 서블릿 패턴과는 상이하다
-                .excludePathPatterns("/css/**", "/*.ico", "/error"); // 예외 패턴에 대해서 작성 가능!
+                .order(1) // 인터셉터 순서
+                .addPathPatterns("/**") // 패턴 적용 url
+                .excludePathPatterns("/css/**", "/*.ico", "/error"); // 패턴 예외 url
+
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(2) // 인터셉터 순서
+                .addPathPatterns("/**") // 패턴을 적용하고자 하는 url
+                // 패턴 예외 url
+                .excludePathPatterns("/**/js/*.js", "/index", "/", "/home", "/members/newregisters", "/login", "/logout","/css/**", "/*.ico", "/error");
 
     }
 

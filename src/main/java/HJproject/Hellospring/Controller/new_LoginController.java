@@ -40,7 +40,7 @@ public class new_LoginController {
     public String loginWithHttpSession(@ModelAttribute LoginForm form,
                                        BindingResult bindingResult,
                                        HttpServletRequest request, HttpServletResponse res,
-                                       @RequestParam(defaultValue = "/") String redirectURL
+                                       @RequestParam(name="redirectURL", defaultValue = "/") String redirectURL
     ) throws IOException {
         JSONObject jso = new JSONObject();
         // 에러 관리 메서드(아직 사용 X)
@@ -50,7 +50,6 @@ public class new_LoginController {
 
         // 1. loginForm 을 통해 로그인 정보들을 가져옴
         Member LoginMember = loginService.login(form.getLoginid(), form.getLoginpw());
-
         Map<String, Object> result = new HashMap<String, Object>();
 
         if (LoginMember == null) { // login 메서드에서 던져주는 값이 null 이면 로그인 실패
@@ -99,7 +98,6 @@ public class new_LoginController {
 
         log.info("redirectURL = {}", redirectURL);
         return "redirect:" + redirectURL;
-
 
     }
 

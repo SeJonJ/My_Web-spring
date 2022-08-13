@@ -69,6 +69,7 @@
 
 
     <form class="login-form" id="loginForm" action="/login" method="post" onsubmit="return fn_submitChk();">
+      <input type="hidden" name="redirectURL" th:value="${param.redirectURL}" />
       <input type="text" id="loginid" name="loginid" placeholder="아이디"/>
       <input type="password" id="loginpw" name="loginpw" placeholder="비밀번호"/>
       <button>로그인</button>
