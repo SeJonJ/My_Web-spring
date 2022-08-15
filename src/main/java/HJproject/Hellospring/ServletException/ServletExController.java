@@ -1,4 +1,4 @@
-package HJproject.Hellospring.Controller;
+package HJproject.Hellospring.ServletException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
