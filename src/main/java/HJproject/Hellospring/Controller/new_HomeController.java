@@ -100,7 +100,7 @@ public class new_HomeController {
     // 세션에 담아져 있으면 로그인 사용자로 취급하여 로그인 사용자에 맞는 요청을 처리하고
     // 아니면 로그인 사용자로 처리하지 않는다.
     // 이때 @Login 어노테이션은 커스텀 어노테이션 - 사용자 정의 어노테이션 - 에 해당한다 => 직접 만들어야한다
-    @GetMapping(value = {"/home"}) // 스프링이 지원하는 세션 기능 : @SessionAttribute
+    @GetMapping(value = {"/home", "/url"}) // 스프링이 지원하는 세션 기능 : @SessionAttribute
     public String LoginHomeV3ArgumentResolver(
             @Login Member loginMember, Model model) {
 

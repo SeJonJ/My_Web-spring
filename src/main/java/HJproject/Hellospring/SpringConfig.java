@@ -41,7 +41,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 .order(2) // 인터셉터 순서
                 .addPathPatterns("/**") // 패턴을 적용하고자 하는 url
                 // 패턴 예외 url
-                .excludePathPatterns("/**/js/*.js", "/index", "/", "/home", "/members/newregisters", "/login", "/logout","/css/**", "/*.ico", "/error");
+                .excludePathPatterns("/**/js/*.js", "/index", "/", "/home", "/members/newregisters", "/login", "/logout","/css/**", "/*.ico", "/error-**","/error-page/*");
 
     }
 
