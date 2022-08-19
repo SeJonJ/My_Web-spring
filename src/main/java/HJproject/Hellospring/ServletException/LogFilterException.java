@@ -1,0 +1,44 @@
+package HJproject.Hellospring.ServletException;
+
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.UUID;
+
+@Slf4j
+// DispatcherType 을 확인하기 위한 logFilter
+public class LogFilterException implements Filter{
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        log.info("log filter init");
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info("log filter doFilter");
+
+
+        HttpServletRequest req = (HttpServletRequest) request;
+
+        String uri = req.getRequestURI();
+        String uuid = UUID.randomUUID().toString();
+
+        try {
+            // Dispatcher 을 확인하기 위해 req.getDispatcherType 으로 가져온다
+            log.info("REQUEST [{}][{}][{}]", uuid, uri, req.getDispatcherType());
+
+            chain.doFilter(request, response);
+        } catch (Exception e) {
+            throw e;
+        }finally {
+            log.info("RESPONSE [{}][{}]", uuid, uri);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        log.info("log filter destory");
+    }
+}

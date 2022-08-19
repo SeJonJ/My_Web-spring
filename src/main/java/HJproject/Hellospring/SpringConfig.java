@@ -2,6 +2,7 @@ package HJproject.Hellospring;
 
 import HJproject.Hellospring.Filter.LogFilter;
 import HJproject.Hellospring.Filter.LoginCheckFilter;
+import HJproject.Hellospring.ServletException.LogFilterException;
 import HJproject.Hellospring.argumentResolver.LoginMemberArgumentResolver;
 import HJproject.Hellospring.interceptor.LogInterceptor;
 import HJproject.Hellospring.interceptor.LoginCheckInterceptor;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.util.List;
@@ -30,19 +32,32 @@ public class SpringConfig implements WebMvcConfigurer {
         resolvers.add(new LoginMemberArgumentResolver());
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LogInterceptor())
-                .order(1) // 인터셉터 순서
-                .addPathPatterns("/**") // 패턴 적용 url
-                .excludePathPatterns("/css/**", "/*.ico", "/error"); // 패턴 예외 url
+    // 인터셉터 적용을 위한 override
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new LogInterceptor())
+//                .order(1) // 인터셉터 순서
+//                .addPathPatterns("/**") // 패턴 적용 url
+//                .excludePathPatterns("/css/**", "/*.ico", "/error"); // 패턴 예외 url
+//
+//        registry.addInterceptor(new LoginCheckInterceptor())
+//                .order(2) // 인터셉터 순서
+//                .addPathPatterns("/**") // 패턴을 적용하고자 하는 url
+//                // 패턴 예외 url
+//                .excludePathPatterns("/**/js/*.js", "/index", "/", "/home", "/members/newregisters", "/login", "/logout","/css/**", "/*.ico", "/error-**","/error-page/*");
+//
+//    }
 
-        registry.addInterceptor(new LoginCheckInterceptor())
-                .order(2) // 인터셉터 순서
-                .addPathPatterns("/**") // 패턴을 적용하고자 하는 url
-                // 패턴 예외 url
-                .excludePathPatterns("/**/js/*.js", "/index", "/", "/home", "/members/newregisters", "/login", "/logout","/css/**", "/*.ico", "/error-**","/error-page/*");
-
+    // DispatcherType을 확인하기 위한 logFilter
+    @Bean
+    public FilterRegistrationBean logFilterDispatcher(){
+        FilterRegistrationBean<Filter> filter = new FilterRegistrationBean<>();
+        filter.setFilter(new LogFilterException());
+        filter.setOrder(1);
+        filter.addUrlPatterns("/*");
+        // 이 필터는 DispatcherType 이 REQUEST 와 ERROR 인 경우에만 호출된다!!
+//        filter.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ERROR);
+        return filter;
     }
 
     // Servlet Filter 를 사용하기 위한 Bean
